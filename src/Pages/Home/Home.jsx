@@ -7,7 +7,11 @@ const Home = () => {
       <div className="w-full">
         <Banner></Banner>
       </div>
-      <h2>home pages</h2>
+      <div>
+        <h2 className="text-center font-bold text-2xl my-4 text-pink-400">
+          Futured Habits
+        </h2>
+      </div>
     </div>
   );
 };

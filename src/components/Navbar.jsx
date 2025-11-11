@@ -18,6 +18,20 @@ const Navbar = () => {
           <a>Browse Public Habits</a>
         </li>
       </NavLink>
+      {user && (
+        <>
+          <NavLink to={"/addhabit"}>
+            <li>
+              <a>Add Habit</a>
+            </li>
+          </NavLink>
+          <NavLink to={"/myhabit"}>
+            <li>
+              <a>My Habits</a>
+            </li>
+          </NavLink>
+        </>
+      )}
     </>
   );
   return (
