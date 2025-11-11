@@ -1,10 +1,11 @@
-import React from "react";
+import React, { use } from "react";
 import { FaGear, FaUser } from "react-icons/fa6";
-import { IoLogOut } from "react-icons/io5";
+import { IoLogIn, IoLogOut } from "react-icons/io5";
 import { Link, NavLink } from "react-router";
+import { AuthContext } from "../context/AuthContext";
 
 const Navbar = () => {
-  const user = "ruhul";
+  const { user, signOutUser } = use(AuthContext);
   const links = (
     <>
       <NavLink to={"/"}>
@@ -100,7 +101,7 @@ const Navbar = () => {
                 </li>
                 <li>
                   <button
-                    //   onClick={signOutUser}
+                    onClick={signOutUser}
                     className="btn btn-xs text-left bg-linear-to-r from-pink-500 to-red-500 text-white"
                   >
                     <IoLogOut /> Logout
