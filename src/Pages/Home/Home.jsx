@@ -3,6 +3,8 @@ import Banner from "../../components/Banner";
 import { useLoaderData } from "react-router";
 import FuturedHabitCard from "../FuturedHabitCard/FuturedHabitCard";
 import WhyBuildCrd from "../WhyBuldCrd/WhyBuildCrd";
+import HowItWorks from "../HowItWorks/HowItWorks";
+import Testimonials from "../Testimonials/Testimonials";
 
 const Home = () => {
   const data = useLoaderData();
@@ -25,6 +27,12 @@ const Home = () => {
       <div className="w-11/12 mx-auto my-8">
         <div>
           <WhyBuildCrd></WhyBuildCrd>
+        </div>
+        <div>
+          <HowItWorks></HowItWorks>
+        </div>
+        <div>
+          <Testimonials></Testimonials>
         </div>
       </div>
     </div>

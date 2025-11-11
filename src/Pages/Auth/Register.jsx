@@ -1,11 +1,12 @@
-import { use, useState } from "react";
+import { useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa6";
 
 const Register = () => {
-  const { createUser, updateUserProfile, signInWithGoogle } = use(AuthContext);
+  const { createUser, updateUserProfile, signInWithGoogle } =
+    useContext(AuthContext);
   const navigate = useNavigate();
 
   // 👁 password toggle state
@@ -13,11 +14,13 @@ const Register = () => {
 
   const handleRegister = (event) => {
     event.preventDefault();
+
     const displayName = event.target.displayName.value.trim();
     const photoURL = event.target.photoURL.value.trim();
     const email = event.target.email.value.trim();
     const password = event.target.password.value;
 
+    // ❌ Validation
     if (!displayName || !email || !password) {
       toast.error("All fields are required!");
       return;
@@ -36,9 +39,11 @@ const Register = () => {
 
     createUser(email, password)
       .then((result) => {
+        toast.success("User account created successfully!");
+
         updateUserProfile(displayName, photoURL)
           .then(() => {
-            toast.success("User created successfully!");
+            toast.success("Profile updated successfully!");
             navigate("/");
           })
           .catch((err) => {
@@ -112,6 +117,7 @@ const Register = () => {
             <div>
               <a className="link link-hover">Forgot password?</a>
             </div>
+
             <button className="btn text-white mt-4 rounded-full bg-linear-to-r from-pink-500 to-red-600">
               Register
             </button>
@@ -120,12 +126,13 @@ const Register = () => {
 
         <button
           onClick={handleGoogleSignIn}
-          className="btn bg-white rounded-full text-black border-[#e5e5e5]"
+          className="btn bg-white rounded-full text-black border-[#e5e5e5] mt-4 flex items-center justify-center gap-2"
         >
           <FaGoogle />
           Login with Google
         </button>
-        <p className="text-center">
+
+        <p className="text-center mt-4">
           Already have an account?{" "}
           <Link className="text-blue-500 hover:text-blue-800" to="/auth/login">
             Login

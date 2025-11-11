@@ -1,40 +1,46 @@
-import { use } from "react";
+import { useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../../context/AuthContext";
 import { FaGoogle } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const Login = () => {
-  const { signInUser, signInWithGoogle } = use(AuthContext);
-
+  const { signInUser, signInWithGoogle } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
-  console.log(location);
 
   const handleLogIn = (event) => {
     event.preventDefault();
-    const email = event.target.email.value;
+    const email = event.target.email.value.trim();
     const password = event.target.password.value;
 
-    console.log(email, password);
+    if (!email || !password) {
+      toast.error("Please enter email and password!");
+      return;
+    }
+
+    toast.info("Logging in...");
+
     signInUser(email, password)
       .then((result) => {
-        console.log(result.user);
+        toast.success("Logged in successfully!");
         event.target.reset();
-        navigate(location.state || "/");
+        navigate(location.state?.from || "/");
       })
       .catch((error) => {
-        console.log(error);
+        toast.error("Login failed: " + error.message);
       });
   };
 
   const handleGoogleSignIn = () => {
+    toast.info("Signing in with Google...");
     signInWithGoogle()
       .then((result) => {
-        console.log(result.user);
-        navigate(location?.state || "/");
+        toast.success("Signed in successfully with Google!");
+        navigate(location.state?.from || "/");
       })
       .catch((error) => {
-        console.log(error);
+        toast.error("Google sign-in failed: " + error.message);
       });
   };
 
@@ -59,9 +65,11 @@ const Login = () => {
               className="input rounded-full focus:border-0 focus:outline-gray-200"
               placeholder="Password"
             />
+
             <div>
               <a className="link link-hover">Forgot password?</a>
             </div>
+
             <button className="btn text-white mt-4 rounded-full bg-linear-to-r from-pink-500 to-red-600">
               Login
             </button>
@@ -70,12 +78,13 @@ const Login = () => {
 
         <button
           onClick={handleGoogleSignIn}
-          className="btn bg-white rounded-full text-black border-[#e5e5e5]"
+          className="btn bg-white rounded-full text-black border-[#e5e5e5] mt-4 flex items-center justify-center gap-2"
         >
           <FaGoogle />
           Login with Google
         </button>
-        <p className="text-center">
+
+        <p className="text-center mt-4">
           New to our website? Please{" "}
           <Link
             className="text-blue-500 hover:text-blue-800"
