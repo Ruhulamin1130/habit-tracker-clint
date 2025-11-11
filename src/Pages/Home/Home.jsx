@@ -1,16 +1,25 @@
 import React from "react";
 import Banner from "../../components/Banner";
+import { useLoaderData } from "react-router";
+import FuturedHabitCard from "../FuturedHabitCard/FuturedHabitCard";
 
 const Home = () => {
+  const data = useLoaderData();
+  console.log(data);
   return (
     <div>
       <div className="w-full">
         <Banner></Banner>
       </div>
-      <div>
-        <h2 className="text-center font-bold text-2xl my-4 text-pink-400">
+      <div className="w-11/12 mx-auto">
+        <h2 className="text-center font-bold text-2xl my-10 text-pink-400">
           Futured Habits
         </h2>
+        <div className="grid grid-cols-1  md:grid-cols-3 gap-4 ">
+          {data.map((habit) => (
+            <FuturedHabitCard key={habit._id} habit={habit}></FuturedHabitCard>
+          ))}
+        </div>
       </div>
     </div>
   );
