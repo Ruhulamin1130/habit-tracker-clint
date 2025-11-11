@@ -20,7 +20,7 @@ const Navbar = () => {
       </NavLink>
       {user && (
         <>
-          <NavLink to={"/habitdetails"}>
+          <NavLink to={"/habit/:id"}>
             <li>
               <a>Habit Detaisls</a>
             </li>

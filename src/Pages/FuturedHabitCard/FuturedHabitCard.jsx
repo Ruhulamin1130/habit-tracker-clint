@@ -8,6 +8,7 @@ const FuturedHabitCard = ({ habit }) => {
   const navigate = useNavigate();
 
   const handleViewDetails = () => {
+    console.log("Habit _id:", habit._id);
     navigate(`/habit/${habit._id}`);
   };
 

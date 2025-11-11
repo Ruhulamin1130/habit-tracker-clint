@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-// import { AuthContext } from "../../context/AuthContext";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router";
 
 const MyHabits = () => {
   const { user } = useContext(AuthContext);
   const [habits, setHabits] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (user?.email) {
@@ -42,6 +43,11 @@ const MyHabits = () => {
     }
   };
 
+  // Update habit (navigate to edit page)
+  const handleUpdate = (id) => {
+    navigate(`/update-habit/${id}`);
+  };
+
   return (
     <div className="my-10 max-w-4xl mx-auto">
       <h2 className="text-3xl font-bold text-center mb-6">My Habits</h2>
@@ -70,6 +76,12 @@ const MyHabits = () => {
                     className="btn btn-xs bg-green-500 text-white"
                   >
                     Mark Complete
+                  </button>
+                  <button
+                    onClick={() => handleUpdate(habit._id)}
+                    className="btn btn-xs bg-blue-500 text-white"
+                  >
+                    Update
                   </button>
                   <button
                     onClick={() => handleDelete(habit._id)}
