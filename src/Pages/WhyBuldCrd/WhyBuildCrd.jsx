@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 import { FaBrain, FaSmileBeam, FaClock, FaBullseye } from "react-icons/fa";
 import Lottie from "lottie-react";
 
@@ -41,37 +42,39 @@ const WhyBuildCrd = () => {
   ];
 
   return (
-    <div>
-      <h2 className="text-3xl font-bold text-center mb-12 text-pink-400">
+    <div className="w-11/12 mx-auto my-16">
+      <h2 className="text-3xl md:text-4xl font-extrabold text-center text-pink-500 mb-12">
         Why Build Good Habits?
       </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 justify-items-center">
-        {benefits.map((item) => (
-          <div
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        {benefits.map((item, index) => (
+          <motion.div
             key={item.id}
-            className="card w-72 bg-base-100 shadow-lg hover:shadow-2xl border border-pink-300 transition-all duration-300 hover:-translate-y-2"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: index * 0.2, duration: 0.6 }}
+            className="bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-2xl border border-pink-300 p-6 flex flex-col items-center text-center cursor-pointer transition-all duration-300 hover:-translate-y-2"
           >
-            <div className="card-body items-center text-center">
-              {/* Lottie Animation */}
-              <div className="w-28 h-28 mb-2">
-                <Lottie animationData={item.lottie} loop={true} />
-              </div>
-
-              {/* Icon */}
-              <div className="mt-1">{item.icon}</div>
-
-              {/* Title */}
-              <h3 className="text-lg font-semibold mt-3 text-gray-800">
-                {item.title}
-              </h3>
-
-              {/* Description */}
-              <p className="text-sm text-gray-600 mt-2 leading-relaxed">
-                {item.description}
-              </p>
+            {/* Lottie Animation */}
+            <div className="w-28 h-28 mb-4">
+              <Lottie animationData={item.lottie} loop={true} />
             </div>
-          </div>
+
+            {/* Icon */}
+            <div className="mb-2">{item.icon}</div>
+
+            {/* Title */}
+            <h3 className="text-lg md:text-xl font-bold text-gray-800 dark:text-white mb-2">
+              {item.title}
+            </h3>
+
+            {/* Description */}
+            <p className="text-sm md:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
+              {item.description}
+            </p>
+          </motion.div>
         ))}
       </div>
     </div>

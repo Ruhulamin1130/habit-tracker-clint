@@ -1,100 +1,86 @@
-import React, { use } from "react";
-import { FaGear, FaUser } from "react-icons/fa6";
-import { IoLogIn, IoLogOut } from "react-icons/io5";
+import React, { use, useEffect, useState } from "react";
 import { Link, NavLink } from "react-router";
+// import { FaGear, FaUser, FaMoon, FaSun } from "react-icons/fa";
+import { IoLogIn, IoLogOut } from "react-icons/io5";
 import { AuthContext } from "../context/AuthContext";
+import { FaMoon, FaSun, FaUser } from "react-icons/fa";
+import { FaGear } from "react-icons/fa6";
 
 const Navbar = () => {
   const { user, signOutUser } = use(AuthContext);
+
+  // 🌙 Theme toggle state
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  useEffect(() => {
+    const html = document.querySelector("html");
+    html.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  const handleTheme = () => setTheme(theme === "light" ? "dark" : "light");
+
+  const navItemClass = ({ isActive }) =>
+    `px-3 py-2 text-sm font-medium transition-all duration-200 ${
+      isActive
+        ? "text-pink-600 border-b-2 border-pink-500"
+        : "text-gray-700 hover:text-pink-600"
+    }`;
+
   const links = (
     <>
-      <NavLink to={"/"}>
-        <li>
-          <a>Home</a>
-        </li>
+      <NavLink to="/" className={navItemClass}>
+        Home
       </NavLink>
-      <NavLink to={"/public-habit"}>
-        <li>
-          <a>Browse Public Habits</a>
-        </li>
+      <NavLink to="/public-habit" className={navItemClass}>
+        Browse Public Habits
       </NavLink>
       {user && (
         <>
-          <NavLink to={"/habit/:id"}>
-            <li>
-              <a>Habit Detaisls</a>
-            </li>
+          <NavLink to="/addhabit" className={navItemClass}>
+            Add Habit
           </NavLink>
-          <NavLink to={"/addhabit"}>
-            <li>
-              <a>Add Habit</a>
-            </li>
-          </NavLink>
-          <NavLink to={"/myhabit"}>
-            <li>
-              <a>My Habits</a>
-            </li>
-          </NavLink>
-          <NavLink to={"/update-habit/:id"}>
-            <li>
-              <a>Update habit</a>
-            </li>
+          <NavLink to="/myhabit" className={navItemClass}>
+            My Habits
           </NavLink>
         </>
       )}
     </>
   );
+
   return (
-    <div className="navbar bg-base-100 shadow-sm">
-      <div className="w-11/12 mx-auto navbar">
-        <div className="navbar-start">
-          <div className="dropdown">
-            <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                {" "}
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h8m-8 6h16"
-                />{" "}
-              </svg>
-            </div>
-            <ul
-              tabIndex="-1"
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
-            >
-              {links}
-            </ul>
-          </div>
-          <NavLink
-            to={"/"}
-            className="btn bg-linear-to-r from-pink-500 to-red-600 text-xl"
+    <header className="sticky top-0 z-50 bg-white/80 dark:bg-gray-900 backdrop-blur-lg border-b border-gray-100 dark:border-gray-700 shadow-sm transition-colors">
+      <div className="w-11/12 mx-auto flex items-center justify-between py-3">
+        {/* Logo */}
+        <Link
+          to="/"
+          className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white hover:text-pink-600 transition"
+        >
+          Habit<span className="text-pink-600">Tracker</span>
+        </Link>
+
+        {/* Desktop Menu */}
+        <nav className="hidden lg:flex items-center gap-6">{links}</nav>
+
+        {/* Right side */}
+        <div className="flex items-center gap-3">
+          {/* Theme Toggle */}
+          <button
+            onClick={handleTheme}
+            className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:scale-105 transition-all"
           >
-            Habit-Tracker
-          </NavLink>
-        </div>
-        <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1">{links}</ul>
-        </div>
-        <div className="navbar-end">
-          {/* end here for user */}
+            {theme === "light" ? <FaMoon /> : <FaSun />}
+          </button>
+
           {user ? (
-            <div className="dropdown dropdown-end z-50">
+            <div className="dropdown dropdown-end">
               <div
                 tabIndex={0}
                 role="button"
-                className="btn btn-ghost btn-circle avatar"
+                className="btn btn-ghost btn-circle avatar border border-gray-300 dark:border-gray-600 hover:scale-105 transition"
               >
-                <div className="w-9 border-2 border-gray-300 rounded-full">
+                <div className="w-9 rounded-full">
                   <img
-                    alt="Tailwind CSS Navbar component"
+                    alt="user avatar"
                     referrerPolicy="no-referrer"
                     src={
                       user.photoURL ||
@@ -104,29 +90,37 @@ const Navbar = () => {
                 </div>
               </div>
               <ul
-                tabIndex="-1"
-                className="menu  menu-sm dropdown-content bg-base-100 rounded-box z-50 mt-3 w-52 p-2 shadow"
+                tabIndex={0}
+                className="menu menu-sm dropdown-content mt-3 p-3 shadow-lg bg-white dark:bg-gray-800 rounded-xl w-52 border border-gray-100 dark:border-gray-700"
               >
-                <div className=" pb-3 border-b border-b-gray-200">
-                  <li className="text-sm font-bold">{user.displayName}</li>
-                  <li className="text-xs">{user.email}</li>
-                </div>
-                <li className="mt-3">
-                  <Link to={"/profile"}>
+                <li className="border-b border-gray-200 dark:border-gray-700 pb-2 mb-2">
+                  <p className="font-semibold text-gray-900 dark:text-gray-200 text-sm">
+                    {user.displayName}
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    {user.email}
+                  </p>
+                </li>
+                <li>
+                  <Link
+                    to="/profile"
+                    className="hover:text-pink-600 flex items-center gap-2"
+                  >
                     <FaUser /> Profile
                   </Link>
                 </li>
-
                 <li>
-                  <a>
-                    {" "}
+                  <Link
+                    to="/settings"
+                    className="hover:text-pink-600 flex items-center gap-2"
+                  >
                     <FaGear /> Settings
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <button
                     onClick={signOutUser}
-                    className="btn btn-xs text-left bg-linear-to-r from-pink-500 to-red-500 text-white"
+                    className="btn btn-sm w-full mt-2 bg-pink-500 text-white hover:bg-pink-600 border-none flex items-center justify-center gap-2"
                   >
                     <IoLogOut /> Logout
                   </button>
@@ -135,16 +129,45 @@ const Navbar = () => {
             </div>
           ) : (
             <Link
-              to={"/auth/login"}
-              className="btn rounded-full border-gray-300  btn-sm bg-linear-to-r from-pink-500 to-red-500 text-white"
+              to="/auth/login"
+              className="btn btn-sm bg-pink-500 hover:bg-pink-600 border-none text-white rounded-full flex items-center gap-2"
             >
-              {" "}
               <IoLogIn /> Login
             </Link>
           )}
         </div>
+
+        {/* Mobile Menu */}
+        <div className="lg:hidden dropdown dropdown-end">
+          <div
+            tabIndex={0}
+            role="button"
+            className="btn btn-ghost btn-circle text-gray-700 dark:text-gray-200"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h16m-7 6h7"
+              />
+            </svg>
+          </div>
+          <ul
+            tabIndex={0}
+            className="menu menu-sm dropdown-content mt-3 p-3 shadow bg-white dark:bg-gray-800 rounded-box w-52 border border-gray-100 dark:border-gray-700"
+          >
+            {links}
+          </ul>
+        </div>
       </div>
-    </div>
+    </header>
   );
 };
 

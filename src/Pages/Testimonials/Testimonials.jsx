@@ -1,5 +1,10 @@
-import { motion } from "framer-motion";
 import React from "react";
+import { FaUserCircle } from "react-icons/fa";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 
 const testimonials = [
   {
@@ -17,33 +22,49 @@ const testimonials = [
     name: "John Smith",
     text: "The visual analytics keeps me motivated every day.",
   },
+  {
+    id: 4,
+    name: "Alex Johnson",
+    text: "I love the progress tracking. It’s simple and effective!",
+  },
 ];
 
 const Testimonials = () => {
   return (
-    <motion.section
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.8, delay: 0.2 }}
-      className="py-20 px-6"
-    >
-      <h2 className="text-3xl font-bold text-center mb-10 text-pink-400">
+    <section className="py-20 px-6 bg-gray-50 dark:bg-gray-900">
+      <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-12 text-pink-500">
         What Our Users Say
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+      <Swiper
+        modules={[Autoplay, Pagination, Navigation]}
+        spaceBetween={20}
+        slidesPerView={1}
+        loop={true}
+        autoplay={{ delay: 3000, disableOnInteraction: false }}
+        pagination={{ clickable: true }}
+        navigation={true}
+        breakpoints={{
+          640: { slidesPerView: 1 },
+          768: { slidesPerView: 2 },
+          1024: { slidesPerView: 3 },
+        }}
+      >
         {testimonials.map((item) => (
-          <motion.div
-            key={item.id}
-            whileHover={{ scale: 1.03 }}
-            className="card p-6 bg-white shadow-lg border border-gray-200 text-center hover:shadow-2xl transition-all duration-300"
-          >
-            <p className="text-gray-600">{item.text}</p>
-            <h4 className="mt-4 font-semibold text-gray-800">– {item.name}</h4>
-          </motion.div>
+          <SwiperSlide key={item.id}>
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-2xl border border-pink-300 p-6 flex flex-col items-center text-center cursor-pointer transition-all duration-300">
+              <FaUserCircle className="text-pink-500 text-5xl mb-4" />
+              <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base leading-relaxed">
+                "{item.text}"
+              </p>
+              <h4 className="mt-4 font-semibold text-gray-800 dark:text-white">
+                – {item.name}
+              </h4>
+            </div>
+          </SwiperSlide>
         ))}
-      </div>
-    </motion.section>
+      </Swiper>
+    </section>
   );
 };
 

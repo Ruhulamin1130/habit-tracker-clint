@@ -19,11 +19,3 @@
   border: 1px solid rgba(255, 255, 255, 0.3);
   /* overflow: hidden; */
 }
-
-.navbar .active {
-  color: crimson;
-  font-weight: bold;
-  border: 1px solid #cac8c8ff;
-  border-radius: 20px;
-  background: rgb(243, 226, 226);
-}

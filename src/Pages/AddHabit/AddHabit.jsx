@@ -3,6 +3,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { toast } from "react-toastify";
 import axios from "axios";
 import Spinner from "../../components/Spinner";
+import { FaRegImage, FaClock, FaTag, FaPlus } from "react-icons/fa";
 
 const AddHabit = () => {
   const { user } = useContext(AuthContext);
@@ -70,90 +71,113 @@ const AddHabit = () => {
 
       if (!res.ok) throw new Error("Failed to add habit");
 
-      // ✅ Success Toast + Reload page
       toast.success("Habit added successfully!");
-      setTimeout(() => {
-        window.location.reload(); // পেজ রিলোড হবে
-      }, 1500);
+      setTimeout(() => window.location.reload(), 1500);
     } catch (err) {
       toast.error(err.message);
     } finally {
       setLoading(false);
     }
   };
-  if (loading) return <Spinner></Spinner>;
+
+  if (loading) return <Spinner />;
 
   return (
-    <div className="card bg-base-100 shadow-xl max-w-lg mx-auto my-10 p-6">
-      <h1 className="text-2xl font-bold mb-6 text-pink-400 text-center">
-        Add New Habit
+    <div className="card bg-white dark:bg-gray-800 shadow-xl max-w-lg mx-auto my-10 p-6 border-2 border-pink-300 rounded-2xl">
+      <h1 className="text-2xl font-bold mb-6 text-pink-400 text-center flex items-center justify-center gap-2">
+        <FaPlus /> Add New Habit
       </h1>
-      <form onSubmit={handleAddHabit}>
-        <label className="label">Habit Title</label>
-        <input
-          type="text"
-          name="title"
-          placeholder="Habit Title"
-          className="input w-full mb-4 rounded-full focus:outline-gray-200"
-        />
 
-        <label className="label">Description</label>
-        <textarea
-          name="description"
-          placeholder="Description"
-          className="input w-full mb-4 rounded-xl h-24 focus:outline-gray-200"
-        ></textarea>
+      <form onSubmit={handleAddHabit} className="space-y-4">
+        <div>
+          <label className="label flex items-center gap-2">
+            <FaPlus className="text-pink-500" /> Habit Title
+          </label>
+          <input
+            type="text"
+            name="title"
+            placeholder="Habit Title"
+            className="input w-full rounded-full border border-pink-300 focus:ring-2 focus:ring-pink-400 focus:outline-none px-4 py-2"
+          />
+        </div>
 
-        <label className="label">Category</label>
-        <select
-          name="category"
-          className="input w-full mb-4 rounded-full focus:outline-gray-200"
-        >
-          <option value="">Select Category</option>
-          <option value="Morning">Morning</option>
-          <option value="Work">Work</option>
-          <option value="Fitness">Fitness</option>
-          <option value="Evening">Evening</option>
-          <option value="Study">Study</option>
-        </select>
+        <div>
+          <label className="label flex items-center gap-2">
+            <FaPlus className="text-pink-500" /> Description
+          </label>
+          <textarea
+            name="description"
+            placeholder="Description"
+            className="input w-full rounded-xl h-24 border border-pink-300 focus:ring-2 focus:ring-pink-400 focus:outline-none px-4 py-2"
+          ></textarea>
+        </div>
 
-        <label className="label">Reminder Time</label>
-        <input
-          type="time"
-          name="reminderTime"
-          className="input w-full mb-4 rounded-full focus:outline-gray-200"
-        />
+        <div>
+          <label className="label flex items-center gap-2">
+            <FaTag className="text-pink-500" /> Category
+          </label>
+          <select
+            name="category"
+            className="input w-full rounded-full border border-pink-300 focus:ring-2 focus:ring-pink-400 focus:outline-none px-4 py-2"
+          >
+            <option value="">Select Category</option>
+            <option value="Morning">Morning</option>
+            <option value="Work">Work</option>
+            <option value="Fitness">Fitness</option>
+            <option value="Evening">Evening</option>
+            <option value="Study">Study</option>
+          </select>
+        </div>
 
-        <label className="label">Upload Image (Optional)</label>
-        <input
-          type="file"
-          accept="image/*"
-          className="input w-full mb-4 rounded-full focus:outline-gray-200"
-          onChange={(e) => setHabitImage(e.target.files[0])}
-        />
+        <div>
+          <label className="label flex items-center gap-2">
+            <FaClock className="text-pink-500" /> Reminder Time
+          </label>
+          <input
+            type="time"
+            name="reminderTime"
+            className="input w-full rounded-full border border-pink-300 focus:ring-2 focus:ring-pink-400 focus:outline-none px-4 py-2"
+          />
+        </div>
 
-        <label className="label">User Email</label>
-        <input
-          type="email"
-          value={user?.email || ""}
-          readOnly
-          className="input w-full mb-4 rounded-full bg-gray-100 focus:outline-gray-200"
-        />
+        <div>
+          <label className="label flex items-center gap-2">
+            <FaRegImage className="text-pink-500" /> Upload Image (Optional)
+          </label>
+          <input
+            type="file"
+            accept="image/*"
+            className="input w-full rounded-full border border-pink-300 focus:ring-2 focus:ring-pink-400 focus:outline-none px-4 py-2"
+            onChange={(e) => setHabitImage(e.target.files[0])}
+          />
+        </div>
 
-        <label className="label">User Name</label>
-        <input
-          type="text"
-          value={user?.displayName || ""}
-          readOnly
-          className="input w-full mb-4 rounded-full bg-gray-100 focus:outline-gray-200"
-        />
+        <div>
+          <label className="label">User Email</label>
+          <input
+            type="email"
+            value={user?.email || ""}
+            readOnly
+            className="input w-full rounded-full bg-gray-100 px-4 py-2"
+          />
+        </div>
+
+        <div>
+          <label className="label">User Name</label>
+          <input
+            type="text"
+            value={user?.displayName || ""}
+            readOnly
+            className="input w-full rounded-full bg-gray-100 px-4 py-2"
+          />
+        </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="btn w-full mt-4 rounded-full bg-gradient-to-r from-pink-500 to-red-600 text-white"
+          className="btn w-full mt-4 rounded-full bg-gradient-to-r from-pink-500 to-red-600 text-white hover:opacity-90 flex items-center justify-center gap-2"
         >
-          {loading ? "Adding..." : "Add Habit"}
+          <FaPlus /> {loading ? "Adding..." : "Add Habit"}
         </button>
       </form>
     </div>

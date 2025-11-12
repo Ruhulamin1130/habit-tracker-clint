@@ -8,72 +8,70 @@ const FuturedHabitCard = ({ habit }) => {
   const navigate = useNavigate();
 
   const handleViewDetails = () => {
-    console.log("Habit _id:", habit._id);
     navigate(`/habit/${habit._id}`);
   };
 
   return (
     <motion.div
-      whileHover={{ scale: 1.05 }}
+      whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.97 }}
-      transition={{ type: "spring", stiffness: 250, damping: 15 }}
-      className="card w-80 bg-base-100 shadow-xl border border-pink-300 hover:shadow-2xl cursor-pointer"
+      transition={{ type: "spring", stiffness: 200, damping: 15 }}
+      className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-pink-300 hover:shadow-2xl overflow-hidden cursor-pointer"
     >
-      {/* Image */}
-      <figure>
+      {/* Image with gradient overlay */}
+      <div className="relative h-48 w-full overflow-hidden rounded-t-2xl">
         <motion.img
           src={
             habit.image ||
             "https://via.placeholder.com/400x250?text=Habit+Image"
           }
           alt={habit.title}
-          className="h-48 w-full p-4  object-cover rounded-xl"
-          whileHover={{ scale: 1.1 }}
-          transition={{ duration: 0.4 }}
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         />
-      </figure>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+      </div>
 
       {/* Body */}
-      <div className="card-body">
-        <h2 className="card-title text-gray-800 text-lg font-semibold">
+      <div className="p-4 md:p-6 flex flex-col gap-3">
+        <h2 className="text-gray-900 dark:text-white text-lg md:text-xl font-bold line-clamp-2">
           {habit.title || "Untitled Habit"}
         </h2>
 
-        <p className="text-gray-600 text-sm">
-          {habit.description?.slice(0, 90) || "No description available..."}
+        <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base line-clamp-3">
+          {habit.description || "No description available..."}
         </p>
 
         {/* Creator Info */}
-        <div className="flex items-center gap-3 mt-3">
+        <div className="flex items-center gap-3 mt-2">
           {habit.creatorPhoto ? (
             <img
               src={habit.creatorPhoto}
               alt={habit.creatorName}
-              className="w-10 h-10 rounded-full object-cover border border-gray-300"
+              className="w-10 h-10 rounded-full object-cover border-2 border-white dark:border-gray-700 shadow-sm"
             />
           ) : (
             <FaUserCircle className="w-10 h-10 text-gray-400" />
           )}
           <div>
-            <h3 className="text-sm font-medium text-gray-700">
+            <h3 className="text-sm font-medium text-gray-700 dark:text-gray-200">
               {habit.creatorName || "Unknown Creator"}
             </h3>
-            <p className="text-xs text-gray-500">{habit.creatorEmail}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              {habit.creatorEmail}
+            </p>
           </div>
         </div>
 
         {/* View Details Button */}
-        <div className="card-actions mt-4">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={handleViewDetails}
-            className="btn btn-sm bg-pink-500 hover:bg-pink-600 text-white w-full flex items-center justify-center gap-2 rounded-lg"
-          >
-            View Details
-            <MdOutlineKeyboardArrowRight size={18} />
-          </motion.button>
-        </div>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={handleViewDetails}
+          className="mt-3 px-4 py-2 w-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-semibold rounded-xl shadow-md flex items-center justify-center gap-2 transition-all duration-300"
+        >
+          View Details
+          <MdOutlineKeyboardArrowRight size={18} />
+        </motion.button>
       </div>
     </motion.div>
   );

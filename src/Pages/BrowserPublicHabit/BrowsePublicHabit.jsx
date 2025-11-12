@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 import { FaUserCircle } from "react-icons/fa";
 import Spinner from "../../components/Spinner";
+import { motion } from "framer-motion";
 
 const categories = ["All", "Morning", "Work", "Fitness", "Evening", "Study"];
 
@@ -39,7 +40,6 @@ const BrowsePublicHabits = () => {
     return matchesSearch && matchesCategory;
   });
 
-  // 🔹 Spinner use
   if (loading) return <Spinner />;
 
   return (
@@ -55,7 +55,7 @@ const BrowsePublicHabits = () => {
           placeholder="Search habits..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="border p-2 rounded w-full md:w-1/2"
+          className="border p-2 rounded-full w-full md:w-1/2 shadow-sm focus:ring-2 focus:ring-pink-400"
         />
       </div>
 
@@ -65,10 +65,10 @@ const BrowsePublicHabits = () => {
           <button
             key={category}
             onClick={() => setSelectedCategory(category)}
-            className={`px-4 py-2 rounded-full border transition ${
+            className={`px-4 py-2 rounded-full border transition font-medium ${
               selectedCategory === category
-                ? "bg-pink-500 text-white border-pink-500"
-                : "bg-white text-gray-700 border-gray-300 hover:bg-pink-100"
+                ? "bg-pink-500 text-white border-pink-500 shadow-md"
+                : "bg-white text-gray-700 border-gray-300 hover:bg-pink-50"
             }`}
           >
             {category}
@@ -79,49 +79,58 @@ const BrowsePublicHabits = () => {
       {/* Habits Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredHabits.length > 0 ? (
-          filteredHabits.map((habit) => (
-            <div
+          filteredHabits.map((habit, index) => (
+            <motion.div
               key={habit._id}
-              className="card bg-base-100 shadow-md border border-gray-200 rounded-xl overflow-hidden"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1, duration: 0.5 }}
+              whileHover={{ scale: 1.02 }}
+              className="cursor-pointer bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden transition-all duration-300"
             >
-              <img
-                src={
-                  habit.image ||
-                  "https://via.placeholder.com/400x250?text=Habit+Image"
-                }
-                alt={habit.title}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-4">
-                <h3 className="text-lg font-semibold mb-2">
+              <div className="h-48 w-full overflow-hidden rounded-t-2xl">
+                <img
+                  src={
+                    habit.image ||
+                    "https://via.placeholder.com/400x250?text=Habit+Image"
+                  }
+                  alt={habit.title}
+                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                />
+              </div>
+
+              <div className="p-5 flex flex-col gap-3">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                   {habit.title || "Untitled Habit"}
                 </h3>
-                <p className="text-gray-600 mb-3">
-                  {habit.description?.slice(0, 80) ||
-                    "No description available"}
+                <p className="text-gray-600 dark:text-gray-300 mb-2 line-clamp-3">
+                  {habit.description || "No description available"}
                 </p>
+
                 <div className="flex items-center gap-2 mb-3">
                   {habit.creatorPhoto ? (
                     <img
                       src={habit.creatorPhoto}
                       alt={habit.creatorName}
-                      className="w-8 h-8 rounded-full object-cover"
+                      className="w-8 h-8 rounded-full object-cover border border-gray-200"
                     />
                   ) : (
                     <FaUserCircle className="w-8 h-8 text-gray-400" />
                   )}
-                  <span className="text-sm text-gray-700">
+                  <span className="text-sm text-gray-700 dark:text-gray-300">
                     {habit.creatorName || "Unknown"} ({habit.creatorEmail})
                   </span>
                 </div>
+
                 <button
                   onClick={() => handleViewDetails(habit._id)}
-                  className="btn btn-sm w-full bg-pink-500 hover:bg-pink-600 text-white rounded-full"
+                  className="btn w-full bg-pink-500 hover:bg-pink-600 text-white rounded-full shadow-md transition-all duration-300"
                 >
                   See Details
                 </button>
               </div>
-            </div>
+            </motion.div>
           ))
         ) : (
           <p className="text-center col-span-full text-gray-500">

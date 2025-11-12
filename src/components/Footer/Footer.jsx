@@ -7,183 +7,124 @@ import { Link } from "react-router";
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   return (
-    <footer className="bg-linear-to-r from-pink-500 to-red-600 py-8 px-4  rounded-xl mt-20">
-      <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-6">
+    <footer className="bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 text-white py-12 px-6 mt-20 rounded-t-3xl shadow-lg">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+        {/* Brand */}
         <div>
-          <div className="flex items-center space-x-2 text-white">
-            <span className="text-xl font-bold text-gray-800 dark:text-gray-200">
-              Habit-Tracker
-            </span>
-          </div>
-          <ul className="space-y-2 mt-4">
+          <h2 className="text-2xl font-extrabold mb-4 tracking-wide">
+            Habit<span className="text-white/80">Tracker</span>
+          </h2>
+          <p className="text-sm text-white/80">
+            Build better habits and stay consistent every day. Track your goals,
+            stay motivated, and grow.
+          </p>
+        </div>
+
+        {/* Quick Links */}
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+          <ul className="space-y-2 text-white/80">
             <li>
-              <Link
-                to="/all-habit"
-                className="text-gray-600 dark:text-gray-200 hover:text-blue-600"
-              >
-                All Habit
+              <Link to="/all-habit" className="hover:text-white transition">
+                All Habits
               </Link>
             </li>
             <li>
-              <Link
-                to="/add-habit"
-                className="text-gray-600 dark:text-gray-200 hover:text-blue-600"
-              >
+              <Link to="/add-habit" className="hover:text-white transition">
                 Add Habit
               </Link>
             </li>
             <li>
-              <Link
-                to="/profile"
-                className="text-gray-600 dark:text-gray-200 hover:text-blue-600"
-              >
+              <Link to="/profile" className="hover:text-white transition">
                 Profile
               </Link>
             </li>
             <li>
-              <Link
-                to="/auth/login"
-                className="text-gray-600 dark:text-gray-200 hover:text-blue-600"
-              >
+              <Link to="/auth/login" className="hover:text-white transition">
                 Login
               </Link>
             </li>
           </ul>
         </div>
 
+        {/* Community */}
         <div>
-          <h3 className="text-lg font-bold mb-4 text-gray-800 dark:text-gray-200">
-            Resources
-          </h3>
-          <ul className="space-y-2">
+          <h3 className="text-lg font-semibold mb-4">Community</h3>
+          <ul className="space-y-2 text-white/80">
             <li>
-              <Link
-                to="/"
-                className="text-gray-600 dark:text-gray-200 hover:text-blue-600"
-              >
-                Learning Blog
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/"
-                className="text-gray-600 dark:text-gray-200 hover:text-blue-600"
-              >
-                Guides
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/"
-                className="text-gray-600 dark:text-gray-200 hover:text-blue-600"
-              >
-                Poly Tips
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/resources"
-                className="text-gray-600 dark:text-gray-200 hover:text-blue-600"
-              >
-                Resources
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 className="text-lg font-bold mb-4 text-gray-800 dark:text-gray-200">
-            Community
-          </h3>
-          <ul className="space-y-2">
-            <li>
-              <Link
-                to="/"
-                className="text-gray-600 dark:text-gray-200 hover:text-blue-600"
-              >
+              <Link to="/" className="hover:text-white transition">
                 Discussion Forums
               </Link>
             </li>
             <li>
-              <Link
-                to="/"
-                className="text-gray-600 dark:text-gray-200 hover:text-blue-600"
-              >
+              <Link to="/" className="hover:text-white transition">
                 Study Groups
               </Link>
             </li>
             <li>
-              <Link
-                to="/"
-                className="text-gray-600 dark:text-gray-200 hover:text-blue-600"
-              >
+              <Link to="/" className="hover:text-white transition">
                 Events & Workshops
               </Link>
             </li>
             <li>
-              <Link
-                to="/"
-                className="text-gray-600 dark:text-gray-200 hover:text-blue-600"
-              >
+              <Link to="/" className="hover:text-white transition">
                 Leaderboard
               </Link>
             </li>
           </ul>
         </div>
 
+        {/* Contact & Social */}
         <div>
-          <h3 className="text-lg font-bold mb-4 text-gray-800 dark:text-gray-200">
-            Connect With Us
-          </h3>
+          <h3 className="text-lg font-semibold mb-4">Connect With Us</h3>
           <div className="flex space-x-4 mb-4">
             <a
               href="https://facebook.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-600 dark:text-gray-200 hover:text-blue-700"
+              className="hover:scale-110 transition-transform"
             >
-              <FaFacebook size={24} />
+              <FaFacebook size={22} />
             </a>
             <a
               href="https://twitter.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-600 dark:text-gray-200 hover:text-blue-400"
+              className="hover:scale-110 transition-transform"
             >
-              <BsTwitterX size={24} />
+              <BsTwitterX size={22} />
             </a>
             <a
               href="https://instagram.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-600 dark:text-gray-200 hover:text-pink-600"
+              className="hover:scale-110 transition-transform"
             >
-              <BsInstagram size={24} />
+              <BsInstagram size={22} />
             </a>
           </div>
-          <div>
-            <a
-              href="mailto:support@nihonlearn.com"
-              className="flex items-center text-gray-600 dark:text-gray-200 hover:text-blue-600"
-            >
-              <FaMailBulk size={18} className="mr-2" /> support@nihonlearn.com
-            </a>
-          </div>
+          <a
+            href="mailto:support@habittracker.com"
+            className="flex items-center text-white/80 hover:text-white transition"
+          >
+            <FaMailBulk size={18} className="mr-2" /> support@habittracker.com
+          </a>
         </div>
       </div>
 
-      <div className="border-t lg:mb-0 md:mb-0 mb-20 border-[#fa7171] mt-8 pt-4 text-center">
-        <p className="text-sm text-gray-600 dark:text-gray-200">
-          © {currentYear} Habit-Tracker Learn. All Rights Reserved.
-          <span className="ml-4">
-            <Link to="/" className="hover:text-blue-600 mr-3">
-              Privacy Policy
-            </Link>
-            <Link to="/" className="hover:text-blue-600">
-              Terms of Service
-            </Link>
-          </span>
+      {/* Bottom Bar */}
+      <div className="border-t border-white/20 mt-10 pt-6 text-center">
+        <p className="text-sm text-white/80">
+          © {currentYear} HabitTracker. All Rights Reserved.
         </p>
+        <div className="mt-2">
+          <Link to="/" className="hover:text-white mr-4 transition">
+            Privacy Policy
+          </Link>
+          <Link to="/" className="hover:text-white transition">
+            Terms of Service
+          </Link>
+        </div>
       </div>
     </footer>
   );

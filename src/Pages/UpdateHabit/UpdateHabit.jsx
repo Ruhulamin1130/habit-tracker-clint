@@ -3,6 +3,8 @@ import { useParams, useNavigate, Link } from "react-router";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../context/AuthContext";
+import { FaUser, FaEnvelope, FaImage } from "react-icons/fa";
+import Spinner from "../../components/Spinner";
 
 const UpdateHabit = () => {
   const { id } = useParams();
@@ -68,19 +70,23 @@ const UpdateHabit = () => {
     }
   };
 
-  if (loading) return <div className="text-center py-10">Loading...</div>;
+  if (loading) return <Spinner></Spinner>;
+
   if (!habit)
     return (
       <div className="text-center text-3xl font-bold text-pink-400 h-screen mt-10 py-10">
-        Habit not found! First Go to my habit and click update button <br />
-        <Link className="btn text-white bg-pink-400" to={"/myhabit"}>
-          Go to my habit
+        Habit not found! Go to My Habits and click update <br />
+        <Link
+          className="btn text-white bg-pink-400 mt-4 inline-block"
+          to={"/myhabit"}
+        >
+          Go to My Habits
         </Link>
       </div>
     );
 
   return (
-    <div className="max-w-2xl mx-auto my-10 bg-white p-6 rounded-2xl shadow-lg">
+    <div className="max-w-2xl mx-auto my-10 bg-white p-6 rounded-2xl shadow-lg border border-pink-300">
       <h2 className="text-2xl font-bold text-pink-400 mb-6 text-center">
         Update Habit
       </h2>
@@ -91,7 +97,7 @@ const UpdateHabit = () => {
           name="title"
           value={formData.title}
           onChange={handleChange}
-          className="input input-bordered w-full"
+          className="input input-bordered w-full border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-100 rounded-xl"
           placeholder="Title"
           required
         />
@@ -101,7 +107,7 @@ const UpdateHabit = () => {
           name="description"
           value={formData.description}
           onChange={handleChange}
-          className="textarea textarea-bordered w-full"
+          className="textarea textarea-bordered w-full border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-100 rounded-xl"
           rows={4}
           placeholder="Description"
           required
@@ -113,7 +119,7 @@ const UpdateHabit = () => {
           name="category"
           value={formData.category}
           onChange={handleChange}
-          className="input input-bordered w-full"
+          className="input input-bordered w-full border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-100 rounded-xl"
           placeholder="Category"
           required
         />
@@ -124,18 +130,21 @@ const UpdateHabit = () => {
           name="reminderTime"
           value={formData.reminderTime}
           onChange={handleChange}
-          className="input input-bordered w-full"
+          className="input input-bordered w-full border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-100 rounded-xl"
         />
 
         {/* Image */}
-        <input
-          type="text"
-          name="image"
-          value={formData.image}
-          onChange={handleChange}
-          className="input input-bordered w-full"
-          placeholder="Image URL (optional)"
-        />
+        <div className="flex items-center gap-2 border border-pink-300 rounded-xl px-3 py-2">
+          <FaImage className="text-pink-500" />
+          <input
+            type="text"
+            name="image"
+            value={formData.image}
+            onChange={handleChange}
+            placeholder="Image URL (optional)"
+            className="w-full focus:outline-none"
+          />
+        </div>
 
         {/* Public */}
         <div className="flex items-center gap-2">
@@ -144,30 +153,38 @@ const UpdateHabit = () => {
             name="isPublic"
             checked={formData.isPublic}
             onChange={handleChange}
-            className="checkbox"
+            className="checkbox checkbox-pink-500"
           />
-          <label>Make Public</label>
+          <label className="text-gray-700 font-medium">Make Public</label>
         </div>
 
         {/* User info (read-only) */}
-        <input
-          type="text"
-          value={habit.creatorName}
-          readOnly
-          className="input input-bordered w-full bg-gray-100"
-          placeholder="User Name"
-        />
-        <input
-          type="email"
-          value={habit.creatorEmail}
-          readOnly
-          className="input input-bordered w-full bg-gray-100"
-          placeholder="Email"
-        />
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-2 border border-pink-300 rounded-xl px-3 py-2">
+            <FaUser className="text-pink-500" />
+            <input
+              type="text"
+              value={habit.creatorName}
+              readOnly
+              className="w-full bg-gray-100 focus:outline-none rounded-xl"
+              placeholder="User Name"
+            />
+          </div>
+          <div className="flex items-center gap-2 border border-pink-300 rounded-xl px-3 py-2">
+            <FaEnvelope className="text-pink-500" />
+            <input
+              type="email"
+              value={habit.creatorEmail}
+              readOnly
+              className="w-full bg-gray-100 focus:outline-none rounded-xl"
+              placeholder="Email"
+            />
+          </div>
+        </div>
 
         <button
           type="submit"
-          className="btn bg-pink-500 hover:bg-pink-600 text-white mt-4"
+          className="btn bg-gradient-to-r from-pink-500 to-red-600 text-white mt-4 rounded-full hover:opacity-90 transition-all"
         >
           Update Habit
         </button>
