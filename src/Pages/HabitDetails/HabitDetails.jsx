@@ -14,7 +14,6 @@ const HabitDetails = () => {
     const fetchHabit = async () => {
       try {
         const res = await axios.get(`http://localhost:3000/habit/${id}`);
-        console.log(res.data);
         setHabit(res.data);
         const today = new Date().toISOString().split("T")[0];
         setCompletedToday(res.data.completionHistory?.includes(today));
@@ -28,30 +27,33 @@ const HabitDetails = () => {
   }, [id]);
 
   const handleMarkComplete = async () => {
-    const today = new Date().toISOString().split("T")[0];
-
     if (completedToday) {
       toast.info("Already marked complete for today!");
       return;
     }
-
     try {
-      const updatedHistory = [...(habit.completionHistory || []), today];
-      const updatedHabit = { ...habit, completionHistory: updatedHistory };
-
-      await axios.put(`http://localhost:3000/habit/${habit._id}`, updatedHabit);
+      const res = await axios.put(
+        `http://localhost:3000/habit/complete/${habit._id}`
+      );
+      const updatedHabit = {
+        ...habit,
+        completionHistory: res.data.completionHistory,
+        currentStreak: res.data.currentStreak,
+      };
       setHabit(updatedHabit);
-      setCompletedToday(true);
+
+      const today = new Date().toISOString().split("T")[0];
+      setCompletedToday(updatedHabit.completionHistory.includes(today));
+
       toast.success("Marked as complete!");
     } catch (error) {
-      toast.error("Failed to mark complete!");
+      toast.error(error.response?.data?.message || "Failed to mark complete!");
     }
   };
 
   if (loading) return <div className="text-center py-10">Loading...</div>;
   if (!habit) return <div className="text-center py-10">Habit not found</div>;
 
-  // ✅ Calculate progress for last 30 days
   const last30 = habit.completionHistory?.slice(-30) || [];
   const progress = (last30.length / 30) * 100;
 
@@ -74,7 +76,6 @@ const HabitDetails = () => {
         Category: <span className="text-pink-600">{habit.category}</span>
       </p>
 
-      {/* Progress Bar */}
       <div className="mt-4">
         <p className="text-sm mb-1 text-gray-600">Progress (last 30 days):</p>
         <div className="w-full bg-gray-200 h-3 rounded-full">
@@ -85,12 +86,10 @@ const HabitDetails = () => {
         </div>
       </div>
 
-      {/* Streak */}
       <div className="mt-3 text-sm text-gray-700">
-        <strong>Streak:</strong> {habit.completionHistory?.length || 0} days 🔥
+        <strong>Streak:</strong> {habit.currentStreak || 0} days 🔥
       </div>
 
-      {/* Creator Info */}
       <div className="mt-4 border-t pt-3 text-sm text-gray-700">
         <p>
           <strong>Created by:</strong> {habit.creatorName || "Unknown"}
@@ -98,7 +97,6 @@ const HabitDetails = () => {
         <p>{habit.creatorEmail}</p>
       </div>
 
-      {/* Mark Complete Button */}
       <motion.button
         whileTap={{ scale: 0.95 }}
         whileHover={{ scale: 1.05 }}

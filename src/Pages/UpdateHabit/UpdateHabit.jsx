@@ -1,169 +1,162 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { useParams, useNavigate } from "react-router";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { AuthContext } from "../../context/AuthContext";
 
-const UpdateHabit = ({ habit, onClose, onUpdated }) => {
-  if (!habit) return null; // ✅ Prevent rendering before data is ready
+const UpdateHabit = () => {
+  const { id } = useParams();
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
+  const [habit, setHabit] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     category: "",
     reminderTime: "",
     image: "",
-    userName: "",
-    userEmail: "",
+    isPublic: false,
   });
 
-  const [imageFile, setImageFile] = useState(null);
-  const [loading, setLoading] = useState(false);
-
-  // ✅ Fill formData when habit is available
   useEffect(() => {
-    if (habit) {
-      setFormData({
-        title: habit.title || "",
-        description: habit.description || "",
-        category: habit.category || "",
-        reminderTime: habit.reminderTime || "",
-        image: habit.image || "",
-        userName: habit.userName || "",
-        userEmail: habit.userEmail || "",
-      });
-    }
-  }, [habit]);
+    const fetchHabit = async () => {
+      try {
+        const res = await axios.get(`http://localhost:3000/habit/${id}`);
+        setHabit(res.data);
+        setFormData({
+          title: res.data.title,
+          description: res.data.description,
+          category: res.data.category,
+          reminderTime: res.data.reminderTime,
+          image: res.data.image,
+          isPublic: res.data.isPublic,
+        });
+      } catch {
+        toast.error("Failed to load habit");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchHabit();
+  }, [id]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value, type, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-
     try {
-      let imageUrl = formData.image;
-
-      if (imageFile) {
-        const uploadForm = new FormData();
-        uploadForm.append("image", imageFile);
-        const imgRes = await axios.post(
-          `https://api.imgbb.com/1/upload?key=YOUR_IMGBB_API_KEY`,
-          uploadForm
-        );
-        imageUrl = imgRes.data.data.display_url;
-      }
-
-      const updatedData = {
-        title: formData.title,
-        description: formData.description,
-        category: formData.category,
-        reminderTime: formData.reminderTime,
-        image: imageUrl,
-      };
-
-      await axios.put(`http://localhost:3000/habit/${habit._id}`, updatedData);
+      await axios.put(`http://localhost:3000/habit/${id}`, {
+        ...formData,
+      });
       toast.success("Habit updated successfully!");
-      onUpdated();
-      onClose();
-    } catch (error) {
-      toast.error("Failed to update habit!");
-      console.error(error);
-    } finally {
-      setLoading(false);
+      navigate("/myhabit");
+    } catch {
+      toast.error("Failed to update habit");
     }
   };
 
+  if (loading) return <div className="text-center py-10">Loading...</div>;
+  if (!habit) return <div className="text-center py-10">Habit not found</div>;
+
   return (
-    <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50">
-      <div className="bg-white rounded-2xl shadow-lg p-6 w-full max-w-md">
-        <h2 className="text-2xl font-semibold mb-4 text-center">
+    <div className="max-w-2xl mx-auto my-10 bg-white p-6 rounded-2xl shadow-lg">
+      <h2 className="text-2xl font-bold mb-6 text-center">Update Habit</h2>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        {/* Title */}
+        <input
+          type="text"
+          name="title"
+          value={formData.title}
+          onChange={handleChange}
+          className="input input-bordered w-full"
+          placeholder="Title"
+          required
+        />
+
+        {/* Description */}
+        <textarea
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+          className="textarea textarea-bordered w-full"
+          rows={4}
+          placeholder="Description"
+          required
+        ></textarea>
+
+        {/* Category */}
+        <input
+          type="text"
+          name="category"
+          value={formData.category}
+          onChange={handleChange}
+          className="input input-bordered w-full"
+          placeholder="Category"
+          required
+        />
+
+        {/* Reminder */}
+        <input
+          type="time"
+          name="reminderTime"
+          value={formData.reminderTime}
+          onChange={handleChange}
+          className="input input-bordered w-full"
+        />
+
+        {/* Image */}
+        <input
+          type="text"
+          name="image"
+          value={formData.image}
+          onChange={handleChange}
+          className="input input-bordered w-full"
+          placeholder="Image URL (optional)"
+        />
+
+        {/* Public */}
+        <div className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            name="isPublic"
+            checked={formData.isPublic}
+            onChange={handleChange}
+            className="checkbox"
+          />
+          <label>Make Public</label>
+        </div>
+
+        {/* User info (read-only) */}
+        <input
+          type="text"
+          value={habit.creatorName}
+          readOnly
+          className="input input-bordered w-full bg-gray-100"
+          placeholder="User Name"
+        />
+        <input
+          type="email"
+          value={habit.creatorEmail}
+          readOnly
+          className="input input-bordered w-full bg-gray-100"
+          placeholder="Email"
+        />
+
+        <button
+          type="submit"
+          className="btn bg-pink-500 hover:bg-pink-600 text-white mt-4"
+        >
           Update Habit
-        </h2>
-
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <input
-            type="text"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            className="input input-bordered w-full rounded-full"
-            placeholder="Habit Title"
-            required
-          />
-
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            className="textarea textarea-bordered w-full rounded-xl"
-            placeholder="Description"
-            required
-          />
-
-          <select
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-            className="select select-bordered w-full rounded-full"
-            required
-          >
-            <option value="">Select Category</option>
-            <option>Morning</option>
-            <option>Work</option>
-            <option>Fitness</option>
-            <option>Evening</option>
-            <option>Study</option>
-          </select>
-
-          <input
-            type="time"
-            name="reminderTime"
-            value={formData.reminderTime}
-            onChange={handleChange}
-            className="input input-bordered w-full rounded-full"
-            required
-          />
-
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setImageFile(e.target.files[0])}
-            className="file-input file-input-bordered w-full rounded-full"
-          />
-
-          <input
-            type="text"
-            value={formData.userName}
-            className="input input-bordered w-full rounded-full"
-            readOnly
-          />
-          <input
-            type="text"
-            value={formData.userEmail}
-            className="input input-bordered w-full rounded-full"
-            readOnly
-          />
-
-          <div className="flex justify-between mt-4">
-            <button
-              type="button"
-              onClick={onClose}
-              className="btn rounded-full bg-gray-300"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="btn rounded-full bg-gradient-to-r from-pink-500 to-red-600 text-white"
-              disabled={loading}
-            >
-              {loading ? "Updating..." : "Update"}
-            </button>
-          </div>
-        </form>
-      </div>
+        </button>
+      </form>
     </div>
   );
 };

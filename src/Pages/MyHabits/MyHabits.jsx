@@ -18,7 +18,6 @@ const MyHabits = () => {
     }
   }, [user]);
 
-  // Delete habit
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this habit?")) return;
 
@@ -31,19 +30,7 @@ const MyHabits = () => {
     }
   };
 
-  // Mark as complete
-  const handleComplete = async (id) => {
-    try {
-      await axios.put(`http://localhost:3000/habit/${id}`, {
-        completed: true,
-      });
-      toast.success("Habit marked as complete!");
-    } catch {
-      toast.error("Failed to update habit!");
-    }
-  };
-
-  // Update habit (navigate to edit page)
+  // Navigate to UpdateHabit page
   const handleUpdate = (id) => {
     navigate(`/update-habit/${id}`);
   };
@@ -68,14 +55,14 @@ const MyHabits = () => {
               <tr key={habit._id}>
                 <td>{habit.title}</td>
                 <td>{habit.category}</td>
-                <td>{habit.streak || 0}</td>
+                <td>{habit.currentStreak || 0}</td>
                 <td>{new Date(habit.createdAt).toLocaleDateString()}</td>
                 <td className="flex gap-2">
                   <button
-                    onClick={() => handleComplete(habit._id)}
+                    onClick={() => navigate(`/habit/${habit._id}`)}
                     className="btn btn-xs bg-green-500 text-white"
                   >
-                    Mark Complete
+                    Compleate
                   </button>
                   <button
                     onClick={() => handleUpdate(habit._id)}

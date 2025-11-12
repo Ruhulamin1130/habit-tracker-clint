@@ -42,7 +42,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/updatehabit",
+        path: "/update-habit/:id",
         element: (
           <PrivateRoute>
             <UpdateHabit></UpdateHabit>

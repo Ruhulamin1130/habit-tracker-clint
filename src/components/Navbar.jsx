@@ -35,7 +35,7 @@ const Navbar = () => {
               <a>My Habits</a>
             </li>
           </NavLink>
-          <NavLink to={"/updatehabit"}>
+          <NavLink to={"/update-habit/:id"}>
             <li>
               <a>Update habit</a>
             </li>
