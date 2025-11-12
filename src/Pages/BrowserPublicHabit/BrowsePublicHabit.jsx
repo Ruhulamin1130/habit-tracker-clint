@@ -17,7 +17,7 @@ const BrowsePublicHabits = () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get("http://localhost:3000/habit")
+      .get("https://habit-tracker-one-ashen.vercel.app/habit")
       .then((res) => setHabits(res.data))
       .catch((err) => {
         console.error(err);

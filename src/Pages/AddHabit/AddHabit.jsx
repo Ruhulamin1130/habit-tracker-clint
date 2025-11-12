@@ -59,11 +59,14 @@ const AddHabit = () => {
     };
 
     try {
-      const res = await fetch("http://localhost:3000/habit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(habitData),
-      });
+      const res = await fetch(
+        "https://habit-tracker-one-ashen.vercel.app/habit",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(habitData),
+        }
+      );
 
       if (!res.ok) throw new Error("Failed to add habit");
 

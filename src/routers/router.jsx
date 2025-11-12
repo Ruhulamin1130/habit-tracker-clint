@@ -18,7 +18,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        loader: () => fetch("http://localhost:3000/habit"),
+        loader: () => fetch("https://habit-tracker-one-ashen.vercel.app/habit"),
         element: <Home></Home>,
       },
       {

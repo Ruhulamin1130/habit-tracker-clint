@@ -12,7 +12,9 @@ const MyHabits = () => {
   useEffect(() => {
     if (user?.email) {
       axios
-        .get(`http://localhost:3000/my-habits/${user.email}`)
+        .get(
+          `https://habit-tracker-one-ashen.vercel.app/my-habits/${user.email}`
+        )
         .then((res) => setHabits(res.data))
         .catch(() => toast.error("Failed to load habits"));
     }
@@ -22,7 +24,9 @@ const MyHabits = () => {
     if (!window.confirm("Are you sure you want to delete this habit?")) return;
 
     try {
-      await axios.delete(`http://localhost:3000/habit/${id}`);
+      await axios.delete(
+        `https://habit-tracker-one-ashen.vercel.app/habit/${id}`
+      );
       setHabits(habits.filter((habit) => habit._id !== id));
       toast.success("Habit deleted successfully!");
     } catch {

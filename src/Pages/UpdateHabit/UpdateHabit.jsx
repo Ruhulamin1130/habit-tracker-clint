@@ -23,7 +23,9 @@ const UpdateHabit = () => {
   useEffect(() => {
     const fetchHabit = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/habit/${id}`);
+        const res = await axios.get(
+          `https://habit-tracker-one-ashen.vercel.app/habit/${id}`
+        );
         setHabit(res.data);
         setFormData({
           title: res.data.title,
@@ -53,9 +55,12 @@ const UpdateHabit = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:3000/habit/${id}`, {
-        ...formData,
-      });
+      await axios.put(
+        `https://habit-tracker-one-ashen.vercel.app/habit/${id}`,
+        {
+          ...formData,
+        }
+      );
       toast.success("Habit updated successfully!");
       navigate("/myhabit");
     } catch {

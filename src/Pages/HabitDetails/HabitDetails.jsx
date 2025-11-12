@@ -13,7 +13,9 @@ const HabitDetails = () => {
   useEffect(() => {
     const fetchHabit = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/habit/${id}`);
+        const res = await axios.get(
+          `https://habit-tracker-one-ashen.vercel.app/habit/${id}`
+        );
         setHabit(res.data);
         const today = new Date().toISOString().split("T")[0];
         setCompletedToday(res.data.completionHistory?.includes(today));
@@ -33,7 +35,7 @@ const HabitDetails = () => {
     }
     try {
       const res = await axios.put(
-        `http://localhost:3000/habit/complete/${habit._id}`
+        `https://habit-tracker-one-ashen.vercel.app/habit/complete/${habit._id}`
       );
       const updatedHabit = {
         ...habit,
