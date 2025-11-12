@@ -3,6 +3,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 import { FaUserCircle } from "react-icons/fa";
+import Spinner from "../../components/Spinner";
 
 const categories = ["All", "Morning", "Work", "Fitness", "Evening", "Study"];
 
@@ -10,16 +11,19 @@ const BrowsePublicHabits = () => {
   const [habits, setHabits] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
+    setLoading(true);
     axios
       .get("http://localhost:3000/habit")
       .then((res) => setHabits(res.data))
       .catch((err) => {
         console.error(err);
         toast.error("Failed to load public habits");
-      });
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   const handleViewDetails = (id) => {
@@ -28,12 +32,15 @@ const BrowsePublicHabits = () => {
 
   const filteredHabits = habits.filter((habit) => {
     const matchesSearch = habit.title
-      .toLowerCase()
+      ?.toLowerCase()
       .includes(searchTerm.toLowerCase());
     const matchesCategory =
       selectedCategory === "All" || habit.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
+
+  // 🔹 Spinner use
+  if (loading) return <Spinner />;
 
   return (
     <div className="my-10 max-w-6xl mx-auto">

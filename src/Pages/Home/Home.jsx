@@ -8,7 +8,7 @@ import Testimonials from "../Testimonials/Testimonials";
 
 const Home = () => {
   const data = useLoaderData();
-  console.log(data);
+  // console.log(data);
   return (
     <div>
       <div className="w-full">

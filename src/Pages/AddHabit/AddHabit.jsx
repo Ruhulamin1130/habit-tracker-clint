@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { toast } from "react-toastify";
 import axios from "axios";
+import Spinner from "../../components/Spinner";
 
 const AddHabit = () => {
   const { user } = useContext(AuthContext);
@@ -77,6 +78,7 @@ const AddHabit = () => {
       setLoading(false);
     }
   };
+  if (loading) return <Spinner></Spinner>;
 
   return (
     <div className="card bg-base-100 shadow-xl max-w-lg mx-auto my-10 p-6">
