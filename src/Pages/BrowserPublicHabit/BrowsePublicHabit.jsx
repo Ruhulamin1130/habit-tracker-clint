@@ -37,7 +37,7 @@ const BrowsePublicHabits = () => {
 
   return (
     <div className="my-10 max-w-6xl mx-auto">
-      <h2 className="text-3xl font-bold text-center mb-6">
+      <h2 className="text-3xl font-bold text-pink-400 text-center mb-6">
         Browse Public Habits
       </h2>
 

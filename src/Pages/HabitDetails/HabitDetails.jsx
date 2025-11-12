@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
@@ -52,7 +52,17 @@ const HabitDetails = () => {
   };
 
   if (loading) return <div className="text-center py-10">Loading...</div>;
-  if (!habit) return <div className="text-center py-10">Habit not found</div>;
+  if (!habit)
+    return (
+      <div className="text-center text-3xl font-bold text-pink-400 py-10 h-screen mt-10">
+        Habit not found! First Go to home/Public habit and click the details{" "}
+        <br />
+        button
+        <Link className="btn bg-pink-400 text-white p-4" to={"/"}>
+          Go to Home
+        </Link>
+      </div>
+    );
 
   const last30 = habit.completionHistory?.slice(-30) || [];
   const progress = (last30.length / 30) * 100;

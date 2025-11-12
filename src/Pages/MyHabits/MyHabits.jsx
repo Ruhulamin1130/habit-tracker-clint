@@ -37,7 +37,9 @@ const MyHabits = () => {
 
   return (
     <div className="my-10 max-w-4xl mx-auto">
-      <h2 className="text-3xl font-bold text-center mb-6">My Habits</h2>
+      <h2 className="text-3xl font-bold text-pink-400 text-center mb-6">
+        My Habits
+      </h2>
 
       <div className="overflow-x-auto">
         <table className="table w-full border">

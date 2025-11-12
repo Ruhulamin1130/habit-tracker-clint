@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams, useNavigate } from "react-router";
+import { useParams, useNavigate, Link } from "react-router";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../context/AuthContext";
@@ -64,11 +64,21 @@ const UpdateHabit = () => {
   };
 
   if (loading) return <div className="text-center py-10">Loading...</div>;
-  if (!habit) return <div className="text-center py-10">Habit not found</div>;
+  if (!habit)
+    return (
+      <div className="text-center text-3xl font-bold text-pink-400 h-screen mt-10 py-10">
+        Habit not found! First Go to my habit and click update button <br />
+        <Link className="btn text-white bg-pink-400" to={"/myhabit"}>
+          Go to my habit
+        </Link>
+      </div>
+    );
 
   return (
     <div className="max-w-2xl mx-auto my-10 bg-white p-6 rounded-2xl shadow-lg">
-      <h2 className="text-2xl font-bold mb-6 text-center">Update Habit</h2>
+      <h2 className="text-2xl font-bold text-pink-400 mb-6 text-center">
+        Update Habit
+      </h2>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         {/* Title */}
         <input

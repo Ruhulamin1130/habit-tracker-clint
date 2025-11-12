@@ -1,17 +1,14 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router";
 import axios from "axios";
 
 const AddHabit = () => {
   const { user } = useContext(AuthContext);
-  const navigate = useNavigate();
-
   const [habitImage, setHabitImage] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // Upload image to ImgBB (optional)
+  // Upload image to ImgBB
   const uploadImage = async (file) => {
     if (!file) return null;
     const formData = new FormData();
@@ -19,7 +16,7 @@ const AddHabit = () => {
 
     try {
       const res = await axios.post(
-        `https://api.imgbb.com/1/upload?key=YOUR_IMGBB_API_KEY`,
+        `https://api.imgbb.com/1/upload?key=d05b8613f2b5db893147b1f4fb4d5904`,
         formData
       );
       return res.data.data.url;
@@ -69,10 +66,11 @@ const AddHabit = () => {
 
       if (!res.ok) throw new Error("Failed to add habit");
 
+      // ✅ Success Toast + Reload page
       toast.success("Habit added successfully!");
-      e.target.reset();
-      setHabitImage(null);
-      navigate("/habits"); // Redirect to habits list page
+      setTimeout(() => {
+        window.location.reload(); // পেজ রিলোড হবে
+      }, 1500);
     } catch (err) {
       toast.error(err.message);
     } finally {
@@ -82,7 +80,9 @@ const AddHabit = () => {
 
   return (
     <div className="card bg-base-100 shadow-xl max-w-lg mx-auto my-10 p-6">
-      <h1 className="text-2xl font-bold mb-6 text-center">Add New Habit</h1>
+      <h1 className="text-2xl font-bold mb-6 text-pink-400 text-center">
+        Add New Habit
+      </h1>
       <form onSubmit={handleAddHabit}>
         <label className="label">Habit Title</label>
         <input
@@ -146,7 +146,7 @@ const AddHabit = () => {
         <button
           type="submit"
           disabled={loading}
-          className="btn w-full mt-4 rounded-full bg-linear-to-r from-pink-500 to-red-600"
+          className="btn w-full mt-4 rounded-full bg-gradient-to-r from-pink-500 to-red-600 text-white"
         >
           {loading ? "Adding..." : "Add Habit"}
         </button>
