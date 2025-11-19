@@ -1,16 +1,26 @@
-# React + Vite
+# Habit-Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+live website link: https://fabulous-truffle-7fbaed.netlify.app/
+A single-page app to create, track, and manage daily habits to build streaks and boost productivity.
 
-Currently, two official plugins are available:
+Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Create habits with images, categories, and reminders
+- Track daily completions and see streaks
+- Browse public habits: search & filter by category
+- Private routes for adding, editing, and marking completion
+- Responsive UI, Framer Motion animations, and toast notifications
 
-## React Compiler
+Tech
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React, Tailwind CSS, Framer Motion, Firebase Auth, React Router
+- Server: Node.js, Express, MongoDB
 
-## Expanding the ESLint configuration
+How to run
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Clone repo
+2. `npm install`
+3. Add `.env` values as in `.env.example`
+4. `npm run dev`
+
+live website link: https://fabulous-truffle-7fbaed.netlify.app/
